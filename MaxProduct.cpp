@@ -1,9 +1,11 @@
-#define debug 0
-
-#include <iostream>
 #include <vector>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
 using namespace std;
 
+// "Solution" exists to make this code identical to a valid solution on Leetcode 
+class Solution {
+public:
 int maxProduct(vector<int>& nums) {
     
     int runningproduct=1;
@@ -31,9 +33,14 @@ int maxProduct(vector<int>& nums) {
 	}
 	return Max;
 }
+};
 
-int main(int argc, char** argv) {
-	cout << "Test Start." << endl;
+
+#include "gtest/gtest.h"
+
+TEST( MaxProduct, Tests )
+{
+	Solution solution{};
 	
 	std::vector<int> data; 
 	int result;
@@ -41,82 +48,62 @@ int main(int argc, char** argv) {
 	
 	
 	data = { 2,3,-2,4 };
-	result = maxProduct(data);
 	expected = 6;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { -2,0,-1 };
-	result = maxProduct(data);
 	expected = 0;
-	cout << result << ", " << expected << endl;
-	
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 2,3,-2,4,1,-1,-3,2,3 };
-	result = maxProduct(data);
 	expected = 72;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { -2,-1,-3 };
-	result = maxProduct(data);
 	expected = 3;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 2,3,-2,4,-1,-1,-3,2,3 };
-	result = maxProduct(data);
 	expected = 864;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { -2,-1 };
-	result = maxProduct(data);
 	expected = 2;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 2,1,3 };
-	result = maxProduct(data);
 	expected = 6;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 0,2,1,3,0 };
-	result = maxProduct(data);
 	expected = 6;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 0,0 };
-	result = maxProduct(data);
 	expected = 0;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 2,-3,2,4 };
-	result = maxProduct(data);
 	expected = 8;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { -3 };
-	result = maxProduct(data);
 	expected = -3;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 0,-3,0 };
-	result = maxProduct(data);
 	expected = 0;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { -3,2 };
-	result = maxProduct(data);
 	expected = 2;
-	cout << result << ", " << expected << endl;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 3,-3 };
-	result = maxProduct(data);
 	expected = 3;
-	cout << result << ", " << expected << endl;
-	
+	EXPECT_EQ( solution.maxProduct(data), expected );
 	
 	data = { 2,3,0,2,3,-2,4,1,-1,-3,2,3 };
-	result = maxProduct(data);
 	expected = 72;
-	cout << result << ", " << expected << endl;
-	
-	
-	return 0;
+	EXPECT_EQ( solution.maxProduct(data), expected );
 }

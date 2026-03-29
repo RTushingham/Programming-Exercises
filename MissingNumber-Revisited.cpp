@@ -6,29 +6,22 @@ using namespace std;
 // "Solution" exists to make this code identical to a valid solution on Leetcode 
 class Solution {
 public:
-int missingNumber(vector<int>& nums)
-{
-    int n = nums.size();
+int missingNumber(vector<int>& nums) {
+    int RunningXor = 0;
+    int Reference = nums.size();
     
-    for(int num : nums){
-        if((num+n+1)%(n+1)!=n){
-            nums[(num+n+1)%(n+1)] -= n+1;
-        }
+    for(int Index=0; Index<nums.size(); Index++){
+        RunningXor = RunningXor^nums[Index];
+        Reference = Reference^Index;
     }
-    
-    int ReturnValue=0;
-    for(int num : nums){
-        ReturnValue += nums[ReturnValue]<0 ? 1 : 0;
-    }
-	
-    return ReturnValue;
+    return RunningXor^Reference;
 }
 };
 
 
 #include "gtest/gtest.h"
 
-TEST( MissingNumber, Tests )
+TEST( MissingNumberRevisited, Tests )
 {
     Solution solution{};
 	

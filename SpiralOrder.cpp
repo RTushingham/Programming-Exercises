@@ -1,9 +1,11 @@
-#define debug 0
-
-#include <iostream>
 #include <vector>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
 using namespace std;
 
+// "Solution" exists to make this code identical to a valid solution on Leetcode 
+class Solution {
+public:
 vector<int> spiralOrder(vector<vector<int>>& matrix) {
     
     int width = matrix[0].size();
@@ -51,35 +53,14 @@ vector<int> spiralOrder(vector<vector<int>>& matrix) {
     
     return Output;
 }
+};
 
 
-void PrintIntArray(vector<int> A){
-	cout << "[";
-	for(int Index=0; Index<(A.size()-1); Index++){
-		cout << A.at(Index) << ", ";
-	}
-	cout << A.at(A.size()-1) << "]";
-}
+#include "gtest/gtest.h"
 
-void CurrentTest(std::vector<vector<int>> D, vector<int> E){
-	vector<int> result;
-	result = spiralOrder(D);
-	PrintIntArray(result);
-	cout << ", ";
-	PrintIntArray(E);
-	cout << endl;
-	
-	if(E==result){
-		cout << "These match." << endl;
-	}else{
-		cout << "These do not match." << endl;
-	}
-}
-
-
-int main(int argc, char** argv) {
-	
-	cout << "Test Start." << endl;
+TEST( SpiralOrder, Tests )
+{
+    Solution solution{};
 	
 	vector<vector<int>> data;
 	vector<int> expected;
@@ -87,22 +68,17 @@ int main(int argc, char** argv) {
 	
 	data = { {1,2,3}, {4,5,6}, {7,8,9} };
 	expected = { 1,2,3,6,9,8,7,4,5 };
-	CurrentTest(data, expected);
-	
+	EXPECT_EQ( solution.spiralOrder(data), expected );
 	
 	data = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12} };
 	expected = { 1,2,3,4,8,12,11,10,9,5,6,7 };
-	CurrentTest(data, expected);
-	
+	EXPECT_EQ( solution.spiralOrder(data), expected );
 	
 	data = { {1,2,3,4,5},{6,7,8,9,10},{11,12,13,14,15} };
 	expected = { 1,2,3,4,5,10,15,14,13,12,11,6,7,8,9 };
-	CurrentTest(data, expected);
+	EXPECT_EQ( solution.spiralOrder(data), expected );
 	
 	data = { {1,2,3},{4,5,6},{7,8,9},{10,11,12},{13,14,15} };
 	expected = { 1,2,3,6,9,12,15,14,13,10,7,4,5,8,11 };
-	CurrentTest(data, expected);
-	
-	
-	return 0;
+	EXPECT_EQ( solution.spiralOrder(data), expected );
 }
