@@ -1,10 +1,13 @@
-#define debug 0
-
-#include <iostream>
 #include <vector>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
 using namespace std;
 
+// Given a rotated sorted list find the minimum element.
 
+// "Solution" exists to make this code identical to a valid solution on Leetcode 
+class Solution {
+public:
 int findMin(vector<int>& nums) {
     
     int FirstIndexOfSection = 0;
@@ -23,71 +26,50 @@ int findMin(vector<int>& nums) {
     }
 	return min;
 }
+};
 
 
-void PrintInt(int A){
-	cout << A;
-}
-void CurrentTest(vector<int> D, int E){
-	int result;
-	result = findMin(D);
-	PrintInt(result);
-	cout << ", ";
-	PrintInt(E);
-	cout << endl;
-	
-	if(E==result){
-		cout << "These match." << endl;
-	}else{
-		cout << "These do not match." << endl;
-	}
-}
+#include "gtest/gtest.h"
 
-
-int main(int argc, char** argv) {
-	
-	cout << "Test Start." << endl;
-	
+TEST( findMin, BasicTests )
+{
+    Solution solution{};
 	vector<int> data;
 	int expected;
 	
-	
 	data = { 3,4,5,1,2 };
 	expected = 1;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	
 	data = { 2,3,4,5,1 };
 	expected = 1;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	
 	data = { 4,5,6,7,0,1,2 };
 	expected = 0;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	
 	data = { 11,13,15,17 };
 	expected = 11;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	
 	data = { 1,2,3 };
 	expected = 1;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	data = { 1,2,3,4,5 };
 	expected = 1;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	data = { 1,2,3,4,5,6,7 };
 	expected = 1;
-	CurrentTest(data, expected);
+	EXPECT_EQ(solution.findMin(data), expected);
 	
 	data = { 1,2,3,4,5,6 };
 	expected = 1;
-	CurrentTest(data, expected);
-	
-	
-	return 0;
+	EXPECT_EQ(solution.findMin(data), expected);
 }

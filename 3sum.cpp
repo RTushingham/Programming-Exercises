@@ -1,3 +1,16 @@
+#include <algorithm>
+#include <vector>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
+using namespace std;
+
+// Given a vector of integers both positive and negative.
+//   Find all tripples of elements in that vector which sum to zero.
+//   Return all index triplets of elements of the vector which sum to 0
+
+// "Solution" exists to make this code identical to a valid solution on Leetcode 
+class Solution {
+public:
 vector<vector<int>> threeSum(vector<int>& nums) {
     
     vector<vector<int>> returnValue;
@@ -43,4 +56,26 @@ vector<vector<int>> threeSum(vector<int>& nums) {
     
     return returnValue;
 }
+};
 
+
+#include "gtest/gtest.h"
+
+TEST( ThreeSum, FromLeetcode )
+{
+    Solution solution{};
+    vector<int> nums;
+    vector<vector<int>> answer;
+    
+    nums = vector<int>{ -1,0,1,2,-1,-4 };
+    answer = vector<vector<int>>{ {-1,-1,2},{-1,0,1} };
+    EXPECT_EQ( solution.threeSum( nums ), answer );
+    
+    nums = vector<int>{ 0,1,1 };
+    answer = vector<vector<int>>{};
+    EXPECT_EQ( solution.threeSum( nums ), answer );
+    
+    nums = vector<int>{ 0,0,0 };
+    answer = vector<vector<int>>{ {0,0,0} };
+    EXPECT_EQ( solution.threeSum( nums ), answer );
+}

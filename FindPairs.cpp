@@ -1,173 +1,102 @@
-
-#define debug 0
-
-#include <iostream>
-
 #include <vector>
 #include <unordered_map>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
 using namespace std;
 
-int FindPairs(vector<int>& nums, int k) {
-    
-    	int returnvalue=0;
-        #if __cplusplus > 201703L
-            std::unordered_map<int, bool> FoundResults;
-        #else //if __cplusplus < 201703L and __cplusplus >= 201103L
-            std::unordered_map<int, bool> FoundResults;
-        #endif
-        
-        FoundResults.reserve(nums.size());
-        
-        if(k!=0){
-	        for(int Index=0;Index<nums.size();Index++){
-    	        
-            	#if __cplusplus > 201703L
-                	if(!(FoundResults.contains(nums[Index]))){
-                    	FoundResults.insert({nums[Index], 1});
-	                }
-    	            
-        	        if(FoundResults[nums[Index]]==1 && FoundResults.contains(nums[Index]+k)){
-            	        returnvalue++;
-                	    FoundResults[nums[Index]]=0;
-	                }
-	
-    	            if(FoundResults.contains(nums[Index]-k) && FoundResults[nums[Index]-k]==1){
-        	            returnvalue++;
-            	        FoundResults[nums[Index]-k]=0;
-                	}
-	            #else
-    	        
-            		#if debug
-            			cout << Index << " Index, " << nums[Index] << " nums[Index]" << endl;
-	            		cout << FoundResults.count(nums[Index]) << " FoundResults.count(nums[Index])" << endl;
-    	        	#endif
-        	    
-            	    if(FoundResults.count(nums[Index])==0){
-                		
-                    	FoundResults.insert({nums[Index], 1});
-	                    
-						#if debug
-        	            	cout << "First Entry: " << nums[Index] << " nums[Index]" << endl;
-            	        #endif
-                	}
-	                
-    	            #if debug
-        	        	cout << nums[Index] << " nums[Index], " << FoundResults.count(nums[Index]+k) << " FoundResults.count(nums[Index]+k)" << endl;
-            	    #endif
-                	
-	                if(FoundResults[nums[Index]]==1 && FoundResults.count(nums[Index]+k)>0){
-    	                
-        	            #if debug
-            	        	cout << "Looked Forwards: " << returnvalue << " returnvalue, " << FoundResults[nums[Index]] << " FoundResults[nums[Index]]" << endl;
-                	    #endif
-                    	
-	                    returnvalue++;
-    	                FoundResults[nums[Index]]=0;
-        	            
-            	        #if debug
-                	    	cout << returnvalue << " returnvalue, " << FoundResults[nums[Index]] << " FoundResults[nums[Index]]" << endl;
-                    	#endif
-	                }
-					
-					#if debug
-						cout << k << " k, " << FoundResults.count(nums[Index]-k) << " FoundResults[nums[Index]-k]" << endl;
-					#endif
-					
-	                if(FoundResults.count(nums[Index]-k)>0 && FoundResults[nums[Index]-k]==1){
-    	            	
-        	        	#if debug
-            	    		cout <<  "Looked Backwards: " << returnvalue << " returnvalue, " << FoundResults[nums[Index]-k] << " FoundResults[nums[Index]-k]" << endl;
-                		#endif
-                		
-	                    returnvalue++;
-    	                FoundResults[nums[Index]-k]=0;
-        	            
-            	        #if debug
-                	    	cout << returnvalue << " returnvalue, " << FoundResults[nums[Index]-k] << " FoundResults[nums[Index]-k]" << endl;
-                    	#endif
-	                }
-	                
-    	        	#if debug
-        	    		cout << "Next Index" << endl;
-            		#endif
-        		
-	            #endif
-        	}
-        }else{
-        	for(int Index=0;Index<nums.size();Index++){
-    	        
-            	#if __cplusplus > 201703L
-                	if(!(FoundResults.contains(nums[Index]))){
-                    	FoundResults.insert({nums[Index], 1});
-	                }else if(FoundResults[nums[Index]]==1){
-	                	returnvalue++;
-	                	FoundResults[nums[Index]]=0;
-	            	}
-	            #else
-    	        
-            		#if debug
-            			cout << Index << " Index, " << nums[Index] << " nums[Index]" << endl;
-	            		cout << FoundResults.count(nums[Index]) << " FoundResults.count(nums[Index])" << endl;
-    	        	#endif
-        	    
-            	    if(FoundResults.count(nums[Index])==0){
-                		
-                    	FoundResults.insert({nums[Index], 1});
-	                    
-						#if debug
-        	            	cout << "First Entry: " << nums[Index] << " nums[Index]" << endl;
-            	        #endif
-                	}else if(FoundResults[nums[Index]]==1){
-                		
-                		#if debug
-                		cout << "First Repeat: " << returnvalue << " returnvalue, " << FoundResults[nums[Index]] << " FoundResults[nums[Index]]" << endl;
-                		#endif
-                		
-                		returnvalue++;
-                		FoundResults[nums[Index]]=0;
-                		
-                		#if debug
-                		cout << returnvalue << " returnvalue, " << FoundResults[nums[Index]] << " FoundResults[nums[Index]]" << endl;
-                		#endif
-					}
-					
-					#if debug
-        	    		cout << "Next Index" << endl;
-            		#endif
-					
-	            #endif
-        	}
-		}
-        return returnvalue;
-}
+// Finds the count of all elements of nums which have a pair in nums such that the absolute difference between them is k.
 
-int main(int argc, char** argv) {
+// "Solution" exists to make this code identical to a valid solution on Leetcode 
+class Solution {
+public:
+int FindPairs(vector<int>& nums, int k) 
+{
+    int pair_count = 0;
+    // We only count the lower number of the pair, so tracking is unique to the pair.
+    std::unordered_map<int, bool> counted_numbers;
+    
+    counted_numbers.reserve(nums.size());
+    
+    if(k!=0)
+    {
+        for(const auto num : nums)
+        {
+            if( 0 == counted_numbers.count(num) )
+            {
+                counted_numbers.insert({num, false});
+            }
+            
+            if( 0 < counted_numbers.count(num+k) && false == counted_numbers[num] )
+            {
+                pair_count++;
+                counted_numbers[num] = true;
+            }
+
+            if( 0 < counted_numbers.count(num-k) && false == counted_numbers[num-k])
+            {
+                pair_count++;
+                counted_numbers[num-k] = true;
+            }
+        }
+    }
+    else
+    {
+        for(const auto num : nums)
+        {
+            if( 0 == counted_numbers.count(num) )
+            {
+                counted_numbers.insert({num, false});
+            }
+            else if( counted_numbers[num]==false )
+            {
+                pair_count++;
+                counted_numbers[num]=true;
+            }
+        }
+    }
+
+    return pair_count;
+}
+};
+
+
+#include "gtest/gtest.h"
+
+TEST( FindPairs, GeneralTests )
+{
+    Solution solution{};
 	std::vector<int> data; 
 	int k;
 	
 	data = { 0,1 };
 	k = 1;
-	cout << FindPairs(data,k) << " 1" << endl;
+    EXPECT_EQ(solution.FindPairs(data,k), 1);
+	
+	data = { 0,1,2 };
+	k = 1;
+    EXPECT_EQ(solution.FindPairs(data,k), 2);
+	
+	data = { 2,1,0 };
+	k = 1;
+    EXPECT_EQ(solution.FindPairs(data,k), 2);
 	
 	data = { 3,1,4,1,5 };
 	k = 2;
-	cout << FindPairs(data,k) << " 2" << endl;
+	EXPECT_EQ(solution.FindPairs(data,k), 2);
 	
 	data = { 1,2,3,4,5 };
 	k = 1;
-	cout << FindPairs(data,k) << " 4" << endl;
+	EXPECT_EQ(solution.FindPairs(data,k), 4);
 	
 	data = { 3,1,4,1,5 };
 	k = 0;
-	cout << FindPairs(data,k) << " 1" << endl;
+    EXPECT_EQ(solution.FindPairs(data,k), 1);
 	
 	data = { -1,-2,-3 };
 	k = 1;
-	cout << FindPairs(data,k) << " 2" << endl;
+	EXPECT_EQ(solution.FindPairs(data,k), 2);
 	
 	data = { 3,2,1 };
 	k = 1;
-	cout << FindPairs(data,k) << " 2" << endl;
-	
-	return 0;
+	EXPECT_EQ(solution.FindPairs(data,k), 2);	
 }
