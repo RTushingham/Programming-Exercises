@@ -1,4 +1,4 @@
-#include <algorithm>
+#include <unordered_map>
 #include <vector>
 
 // std is used as a namespace to make this code identical to a valid solution on Leetcode
@@ -15,45 +15,26 @@ using namespace std;
 // "Solution" exists to make this code identical to a valid solution on Leetcode 
 class Solution {
 public:
-std::vector<int> twoSum( std::vector<int>& nums, int target ) {
+std::vector<int> twoSum( std::vector<int>& nums, int target ) 
+{
+    std::unordered_map<int, std::size_t> previousValues;
 
-    std::vector<int> old;
-
-    for(int Index=0;Index<nums.size();Index++){
-
-        old.push_back(nums[Index]);
-    }
-
-    std::sort(nums.begin(), nums.end());
-
-    int UpperIndex = nums.size()-1;
-    int LowerIndex = 0;
-
-    while( (nums[UpperIndex]+nums[LowerIndex])!=target && LowerIndex<UpperIndex){
-
-        if(nums.at(UpperIndex)+nums.at(LowerIndex) > target ){
-            UpperIndex--;
+    std::size_t Index=0;
+    for( Index=0; Index<nums.size(); Index++ )
+    {
+        if( previousValues.count( target - nums[Index] ) != 0 )
+        {
+            break;
         }
-        if(nums.at(UpperIndex)+nums.at(LowerIndex) < target ){
-            LowerIndex++;
+        else if( previousValues.count( nums[Index] ) == 0 )
+        {
+            previousValues.insert( { nums[Index], Index } );
         }
     }
 
     std::vector<int> Answer;
-    Answer.reserve(2);
-
-    int Index=0;
-    for(Index=0; (old[Index]!=nums[LowerIndex] && old[Index]!=nums[UpperIndex]) && Index<old.size();Index++){
-    }
-    int indexone = Index;
-
-    for(Index=Index+1; (old[Index]!=nums[LowerIndex] && old[Index]!=nums[UpperIndex]) && Index<old.size();Index++){
-    }
-    int indextwo = Index;
-
-    Answer.push_back( (indexone<indextwo) ? indexone : indextwo );
-    Answer.push_back( (indexone<indextwo) ? indextwo : indexone );
-
+    Answer.resize(2);
+    Answer = { (int)previousValues[target - nums[Index]], (int)Index };
     return Answer;
 }
 };
@@ -61,7 +42,7 @@ std::vector<int> twoSum( std::vector<int>& nums, int target ) {
 
 #include "gtest/gtest.h"
 
-TEST( TwoSumTests, OriginalTests )
+TEST( TwoSumTests, Tests )
 {
     Solution solution{};
     std::vector<int> data;
