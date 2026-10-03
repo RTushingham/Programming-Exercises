@@ -10,8 +10,7 @@ class Solution {
 public:
     int findMaxLength(std::vector<int>& nums) {
         
-        std::vector<std::array<int, 2>> structre;
-        structre.reserve(2*nums.size()+1);
+        std::vector<std::array<int, 2>> structre( 2*nums.size()+1, {} );
         
         for(int Index = 0; Index<2*nums.size()+1; Index++){
             structre[Index][0] = 0;
