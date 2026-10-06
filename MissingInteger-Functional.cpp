@@ -27,7 +27,7 @@ int missingNumber(const std::vector<int>& nums) {
 
 #include "gtest/gtest.h"
 
-TEST(MissingNumberTests, SampleTests)
+TEST(MissingNumberFunctionalTests, SampleTests)
 {
     Solution solution{};
 	std::vector<int> data;

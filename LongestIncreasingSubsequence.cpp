@@ -9,7 +9,7 @@ public:
     int lengthOfLIS( vector<int>& nums ) {
         std::vector<int> pile;
 
-        for (int num : nums)
+        for( int num : nums )
 		{
             auto it = std::lower_bound( pile.begin(), pile.end(), num );
 
