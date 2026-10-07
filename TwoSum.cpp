@@ -12,8 +12,8 @@ using namespace std;
 //   -(10**5) <= nums[i] <= 10**5
 //   -(10**5) <= target <= 10**5
 
-// "Solution" exists to make this code identical to a valid solution on Leetcode 
-class Solution {
+// "SolutionTwoSum" class is here to make this code analogous to a valid solution on Leetcode 
+class SolutionTwoSum {
 public:
 std::vector<int> twoSum( std::vector<int>& nums, int target ) 
 {
@@ -44,7 +44,7 @@ std::vector<int> twoSum( std::vector<int>& nums, int target )
 
 TEST( TwoSumTests, Tests )
 {
-    Solution solution{};
+    SolutionTwoSum solution{};
     std::vector<int> data;
     int k;
 

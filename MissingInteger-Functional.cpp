@@ -16,8 +16,8 @@ constexpr int running_bit_xor( int n )
     return n == 0 ? 0 : n ^ running_bit_xor( n - 1 );
 }
 
-// "Solution" exists to make this code identical to a valid solution on Leetcode 
-class Solution {
+// "SolutionMissingNumberFunctional" exists to make this code identical to a valid solution on Leetcode 
+class SolutionMissingNumberFunctional {
 public:
 int missingNumber(const std::vector<int>& nums) {
     return running_bit_xor( nums.size() ) ^ std::accumulate( nums.cbegin(), nums.cend(), 0, std::bit_xor<int>() );
@@ -29,7 +29,7 @@ int missingNumber(const std::vector<int>& nums) {
 
 TEST(MissingNumberFunctionalTests, SampleTests)
 {
-    Solution solution{};
+    SolutionMissingNumberFunctional solution{};
 	std::vector<int> data;
 	int expected;
 	

@@ -1,76 +1,59 @@
-#define debug 0
 
-#include <iostream>
 #include <vector>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
 using namespace std;
 
-int uniquePaths(int m, int n) {
-    
-    int max = std::max(m,n);
-    int min = std::min(m,n);
-    
+long long get_binomial_coefficient( int n, int k )
+{
+    const int min_terms_count{ std::min( k,n-k ) };
+
     long long runningproduct=1;
-    int divisor=1;
     
-    for(int Multiplier=max; Multiplier<m+n-1; Multiplier++, divisor++){
+    for(int Multiplier=n-min_terms_count+1, divisor=1; Multiplier<n+1; Multiplier++, divisor++){
         runningproduct *= Multiplier;
 		runningproduct /= divisor;
     }
-    return (int)runningproduct;
+
+	return runningproduct;
 }
 
-
-void PrintInt(int A){
-	cout << A;
+// "Solution" exists to make this code identical to a valid solution on Leetcode 
+class Solution {
+public:
+int uniquePaths( int m, int n ) {
+    return (int)get_binomial_coefficient( m+n-2, m-1 );
 }
-void CurrentTest(vector<int> D, int E){
-	int result;
-	result = uniquePaths(D[0], D[1]);
-	PrintInt(result);
-	cout << ", ";
-	PrintInt(E);
-	cout << endl;
-	
-	if(E==result){
-		cout << "These match." << endl;
-	}else{
-		cout << "These do not match." << endl;
-	}
-}
+};
 
 
-int main(int argc, char** argv) {
-	
-	cout << "Test Start." << endl;
-	
+#include "gtest/gtest.h"
+
+TEST( UniquePathsTests, Tests )
+{
+    Solution solution{};
 	vector<int> data;
 	int expected;
-	
-	
+
+
 	data = { 1,1 };
 	expected = 1;
-	CurrentTest(data, expected);
-	
+    EXPECT_EQ( solution.uniquePaths(data.at(0),data.at(1)), expected );
 	
 	data = { 3,7 };
 	expected = 28;
-	CurrentTest(data, expected);
-	
+    EXPECT_EQ( solution.uniquePaths(data.at(0),data.at(1)), expected );	
 	
 	data = { 3,2 };
 	expected = 3;
-	CurrentTest(data, expected);
-	
+    EXPECT_EQ( solution.uniquePaths(data.at(0),data.at(1)), expected );	
 	
 	data = { 10,10 };
 	expected = 48620;
-	CurrentTest(data, expected);
-	
+    EXPECT_EQ( solution.uniquePaths(data.at(0),data.at(1)), expected );	
 	
 	data = { 51,9 };
 	expected = 1916797311;
-	CurrentTest(data, expected);
-	
-	
-	return 0;
+    EXPECT_EQ( solution.uniquePaths(data.at(0),data.at(1)), expected );
 }
+

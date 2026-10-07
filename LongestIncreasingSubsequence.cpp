@@ -3,8 +3,8 @@
 // std is used as a namespace to make this code identical to a valid solution on Leetcode
 using namespace std;
 
-// "Solution" exists to make this code identical to a valid solution on Leetcode 
-class Solution {
+// "SolutionLIS" exists to make this code identical to a valid solution on Leetcode 
+class SolutionLIS {
 public:
     int lengthOfLIS( vector<int>& nums ) {
         std::vector<int> pile;
@@ -32,7 +32,7 @@ public:
 
 TEST( LongestIncreasingSubsequence, Tests )
 {
-    Solution solution{};
+    SolutionLIS solution{};
 	
 	std::vector<int> data;
 	int expected;

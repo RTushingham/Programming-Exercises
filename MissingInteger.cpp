@@ -1,5 +1,4 @@
 
-#include <map>
 #include <vector>
 
 // std is used as a namespace to make this code identical to a valid solution on Leetcode
@@ -20,8 +19,8 @@ int getRunningXor( const size_t& end_value )
 	}
 }
 
-// "Solution" exists to make this code identical to a valid solution on Leetcode 
-class Solution {
+// "SolutionMissingNumber" exists to make this code identical to a valid solution on Leetcode 
+class SolutionMissingNumber {
 public:
 int missingNumber(vector<int> &A){
 	int running_xor{ getRunningXor( A.size() ) };
@@ -63,7 +62,7 @@ TEST(MissingNumberTests, RunningXor)
 
 TEST(MissingNumberTests, SampleTests)
 {
-    Solution solution{};
+    SolutionMissingNumber solution{};
 	std::vector<int> data;
 	int expected;
 	
