@@ -1,58 +1,44 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
+
+#include "leetcode-helpers/TreeNode.h"
+
+#include <vector>
+
+// std is used as a namespace to make this code identical to a valid solution on Leetcode
+using namespace std;
+
+class SolutionRecursive {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        loop(root,0);
+        vector<vector<int>> returnValue;
+
+        loop( root, 0, returnValue );
+
         return returnValue;
     }
+
 private:
-    vector<vector<int>> returnValue;
-    
-    void loop(TreeNode* root, int Level)
+    void loop( TreeNode* root, int Level, vector<vector<int>>& returnValue )
     {
-        if(!root)
+        if( nullptr == root)
         {
             return;
         }
-        else
+        
+        if( returnValue.size() <= Level )
         {
-            if( returnValue.size() <= Level)
-            {
-                returnValue.push_back({});
-            }
-            returnValue[Level].push_back(root->val);
-            
-            loop(root->left, ++Level);
-            loop(root->right, Level);
+            returnValue.push_back( {} );
         }
+        returnValue[Level].push_back( root->val );
+        
+        loop( root->left, Level+1, returnValue );
+        loop( root->right, Level+1, returnValue );
     }
 };
 
 
 #include <queue>
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
+class SolutionIterative {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
         queue<TreeNode*> NextLevel;
@@ -86,3 +72,40 @@ public:
         return returnValue;
     }
 };
+
+
+#include "leetcode-helpers/ParseTree.h"
+
+#include "gtest/gtest.h"
+
+namespace
+{
+    using AllSolutions = testing::Types<
+		SolutionRecursive,
+        SolutionIterative
+	>;
+
+    template <typename T>
+    class BinaryTreeLevelOrderTests : public testing::Test {};
+
+    TYPED_TEST_SUITE( BinaryTreeLevelOrderTests, AllSolutions );
+}
+
+TYPED_TEST( BinaryTreeLevelOrderTests, Test )
+{
+    TypeParam solution{};
+
+    vector<vector<int>> expected{};
+
+    auto data{ Parse( "3,9,20,null,null,15,7" ) };
+    expected = { { 3 }, { 9,20 }, { 15,7 } };
+    EXPECT_EQ( solution.levelOrder( &data.front() ), expected );
+
+    data = Parse( "1" );
+    expected = { { 1 } };
+    EXPECT_EQ( solution.levelOrder( &data.front() ), expected );
+
+    data = Parse( "" );
+    expected = {};
+    EXPECT_EQ( solution.levelOrder( nullptr ), expected );
+}

@@ -1,51 +1,63 @@
-//#include <iostream>
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+#include "leetcode-helpers/TreeNode.h"
+
+#include <algorithm>
+
 class Solution {
-public:
-    int maxPathSum(TreeNode* root) {
-        m_nMax = root->val;
-        
-        int nL = MaxFinishingOnSelf(root->left);
-        int nR = MaxFinishingOnSelf(root->right);
-        
-//        cout << "nL, nR, root->val, m_nMax: " << nL << ", " << nR << ", " << root->val << ", " << m_nMax << endl;
-        m_nMax = max(m_nMax, root->val + nL + nR);
-//        cout << "m_nMax: " << m_nMax << endl;
-        
-//        cout << "End of Algo" << endl;
-        return m_nMax;
-    }
-    
-private:
-    int m_nMax;
-    int MaxFinishingOnSelf(TreeNode* root)
+    int MaxPathStartingFromNode( const TreeNode* root, int& running_max )
     {
-        if(root == nullptr)
+        if( root == nullptr )
         {
             return 0;
         }
         else
         {
-            int nL = MaxFinishingOnSelf(root->left);
-            int nR = MaxFinishingOnSelf(root->right);
+            const int l = MaxPathStartingFromNode( root->left, running_max );
+            const int r = MaxPathStartingFromNode( root->right, running_max );
             
-//            cout << "nL, nR, root->val, m_nMax: " << nL << ", " << nR << ", " << root->val << ", " << m_nMax << endl;
-            m_nMax = max(m_nMax, root->val + nL + nR);
-//            cout << "m_nMax: " << m_nMax << endl;
+            // Check  running_max  against  the max path which includes this node and is limited to this subtree
+            //   - This will be the  sum of both  of the  max paths starting from  both of the child nodes
+            //   - This differs from the value we will  return
+            running_max = std::max(
+                running_max,
+                root->val + l + r
+            );
             
-//            cout << "return value: " << root->val + max(nL,nR) << endl;
-            return max(root->val + max(nL,nR), 0);
+            // return  the max path value from this node  or  zero
+            //   - The path must be a single line of nodes
+            //       - Therefore the max value will be the current value plus the max
+            //   - zero  is returned instead of any negative number so that not traversing this path can be simulated by adding the output of this function
+            return std::max(
+                root->val + std::max( l, r ),
+                0
+            );
         }
     }
+
+public:
+    int maxPathSum( TreeNode* root ) {
+        int running_max{};
+
+        MaxPathStartingFromNode( root, running_max );
+
+        return running_max;
+    }
 };
+
+
+#include "leetcode-helpers/ParseTree.h"
+
+#include "gtest/gtest.h"
+
+TEST( BinaryTreeMaximumPathSumTests, Test )
+{
+    Solution solution{};
+
+    auto data{ Parse( "1,2,3" ) };
+    int expected{ 6 };
+    EXPECT_EQ( solution.maxPathSum( &data.front() ), expected );
+
+    data = Parse( "-10,9,20,null,null,15,7" );
+    expected = 42;
+    EXPECT_EQ( solution.maxPathSum( &data.front() ), expected );
+}

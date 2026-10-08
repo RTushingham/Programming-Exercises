@@ -1,58 +1,59 @@
-#include <iostream>
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+#include "leetcode-helpers/TreeNode.h"
+
 class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
-        m_nK = k;
-        m_nCount = 0;
+        int rank{ 0 };
+        int return_value{ 0 };
         
-        AssessIfKthSmallest(root);
+        AssessIfKthSmallest( root, k, rank, return_value );
         
-        return m_nReturnValue;
+        return return_value;
     }
     
-private:
-    int m_nK;
-    int m_nCount;
-    int m_nReturnValue;
-    
-    void AssessIfKthSmallest(TreeNode* root){
-        if(root->left != nullptr)
+private:    
+    void AssessIfKthSmallest( const TreeNode* root, int k, int& rank, int& return_value ){
+        if( nullptr != root->left )
         {
-            AssessIfKthSmallest(root->left);
+            // In-order traversal
+            AssessIfKthSmallest( root->left, k, rank, return_value );
         }
         
-        m_nCount++;
-        cout << "root->left: " << root->left << " root->right: " << root->right << " root->val: " << root->val << endl;
+        rank++;
         
-        cout << "m_nCount: " << m_nCount << endl;
-        
-        if(m_nCount == m_nK)
+        if( rank == k )
         {
-            m_nReturnValue = root->val;
+            return_value = root->val;
         }
-        if(m_nCount >= m_nK)
+        if( rank >= k )
         {
-            cout << "m_nReturnValue: " << m_nReturnValue << endl;
-                
             return;
         }
         
-        if(root->right != nullptr)
+        if( nullptr != root->right )
         {
-            AssessIfKthSmallest(root->right);
+            AssessIfKthSmallest( root->right, k, rank, return_value );
         }
     }
 };
 
+
+#include "leetcode-helpers/ParseTree.h"
+
+#include "gtest/gtest.h"
+
+TEST( KthSmallestElementInBSTTests, Test )
+{
+    Solution solution{};
+
+    auto data{ Parse( "3,1,4,null,2" ) };
+    int k{ 1 };
+    int expected{ 1 };
+    EXPECT_EQ( solution.kthSmallest( &data.front(), k ), expected );
+
+    data = Parse( "5,3,6,2,4,null,null,1" );
+    k = 3;
+    expected = 3;
+    EXPECT_EQ( solution.kthSmallest( &data.front(), k ), expected );
+}
