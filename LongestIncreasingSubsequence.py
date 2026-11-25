@@ -3,6 +3,11 @@ import bisect
 # "Solution" exists to make this code identical to a valid solution on Leetcode 
 class Solution:
     def lengthOfLIS(self, nums: list[int]) -> int:
+        """
+        "lengthOfLIS" finds the length of the largest strictly monomonically increasing subsequence
+        """
+        
+        # For each index the value in this list represent the smallest final value of a previous increasing subsequence of size "index"
         prevs = []
 
         for n in nums:

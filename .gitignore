@@ -1,0 +1,11 @@
+bazel-*
+**/*bazel.lock
+
+imports/thirdparty/**/*
+!imports/thirdparty/**/
+!imports/thirdparty/**/BUILD.bazel
+*.lib
+
+.vscode/**
+
+**/__pycache__/**
